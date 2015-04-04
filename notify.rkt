@@ -10,7 +10,7 @@
 (provide (contract-out
           [notification%
            (class/c
-            (init [message string?]
+            (init [summary string?]
                   [body (or/c string? #f)]
                   [icon (or/c (is-a?/c bitmap%) #f)]
                   [timeout (or/c (>=/c 0) #f)])
@@ -28,7 +28,7 @@
 (define notification%
   (class object%
     (super-new)
-    (init message
+    (init summary
           [body #f]
           [icon #f]
           [(_timeout timeout) #f])
@@ -39,7 +39,7 @@
       (notify-init "Racket"))
 
     ;; A handle on the C object
-    (define handle (notification-new message body #f))
+    (define handle (notification-new summary body #f))
 
     ;; Handle a bitmap icon
     (when (is-a? icon bitmap%)

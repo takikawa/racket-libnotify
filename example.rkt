@@ -5,7 +5,7 @@
 
 (define note
   (new notification%
-       [message "Hello World!"]
+       [summary "Hello World!"]
        [body "This is a test message"]
        [icon (pict->bitmap (colorize (disk 40) "white"))]
        [timeout 2]))
