@@ -6,6 +6,9 @@
 (define note
   (new notification%
        [message "Hello World!"]
-       [icon (pict->bitmap (disk 40))]))
+       [body "This is a test message"]
+       [icon (pict->bitmap (colorize (disk 40) "white"))]))
 
 (send note show)
+(sleep 2)
+(send note close)
