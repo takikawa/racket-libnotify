@@ -12,7 +12,8 @@
            (class/c
             (init [message string?]
                   [body (or/c string? #f)]
-                  [icon (or/c (is-a?/c bitmap%) #f)])
+                  [icon (or/c (is-a?/c bitmap%) #f)]
+                  [timeout (or/c (>=/c 0) #f)])
             [show (->m any)]
             [close (->m any)])])
          (struct-out exn:fail:libnotify))
@@ -29,7 +30,8 @@
     (super-new)
     (init message
           [body #f]
-          [icon #f])
+          [icon #f]
+          [(_timeout timeout) #f])
 
     ;; Initialize libnotify unless it already has been
     ;; unlikely to work if the module is instantiated multiple times
@@ -47,11 +49,21 @@
                                                 (send icon get-height)))
       (notification-set-image-from-pixbuf handle pixbuf))
 
+    ;; Handle timeout in Racket-land because the libnotify timer doesn't
+    ;; seem to do anything on some systems.
+    (define timeout _timeout)
+    (define timeout-thunk
+      (λ () (sleep timeout) (close)))
+
     (define/public (show)
       (define-values (ok? err)
         (notification-show handle))
-      (unless ok?
-        (raise-libnotify-error (GError-message err))))
+      (cond [(and ok? timeout)
+             (thread timeout-thunk)
+             (void)]
+            [ok? (void)]
+            [(not ok?)
+             (raise-libnotify-error (GError-message err))]))
 
     (define/public (close)
       (define-values (ok? err)
