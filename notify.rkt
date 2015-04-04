@@ -12,7 +12,7 @@
            (class/c
             (init [summary string?]
                   [body (or/c string? #f)]
-                  [icon (or/c (is-a?/c bitmap%) #f)]
+                  [icon (or/c (is-a?/c bitmap%) path-string? #f)]
                   [timeout (or/c (>=/c 0) #f)]
                   [urgency (or/c 'low 'normal 'critical)]
                   [category (or/c string? #f)])
@@ -42,8 +42,13 @@
     (unless initialized?
       (notify-init "Racket"))
 
+    (define icon-path-arg
+      (cond [(path? icon) (path->string icon)]
+            [(string? icon) icon]
+            [else #f]))
+
     ;; A handle on the C object
-    (define handle (notification-new summary body #f))
+    (define handle (notification-new summary body icon-path-arg))
     (notification-set-urgency handle urgency)
 
     ;; Handle a bitmap icon
