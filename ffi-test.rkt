@@ -1,6 +1,6 @@
 #lang racket/base
 
-(require "libnotify.rkt")
+(require "ffi.rkt")
 
 (notify-init "test")
 
