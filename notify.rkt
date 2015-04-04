@@ -13,7 +13,8 @@
             (init [summary string?]
                   [body (or/c string? #f)]
                   [icon (or/c (is-a?/c bitmap%) #f)]
-                  [timeout (or/c (>=/c 0) #f)])
+                  [timeout (or/c (>=/c 0) #f)]
+                  [urgency (or/c 'low 'normal 'critical)])
             [show (->m any)]
             [close (->m any)])])
          (struct-out exn:fail:libnotify))
@@ -31,7 +32,8 @@
     (init summary
           [body #f]
           [icon #f]
-          [(_timeout timeout) #f])
+          [(_timeout timeout) #f]
+          [urgency 'normal])
 
     ;; Initialize libnotify unless it already has been
     ;; unlikely to work if the module is instantiated multiple times
@@ -40,6 +42,7 @@
 
     ;; A handle on the C object
     (define handle (notification-new summary body #f))
+    (notification-set-urgency handle urgency)
 
     ;; Handle a bitmap icon
     (when (is-a? icon bitmap%)
