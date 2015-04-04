@@ -14,7 +14,8 @@
                   [body (or/c string? #f)]
                   [icon (or/c (is-a?/c bitmap%) #f)]
                   [timeout (or/c (>=/c 0) #f)]
-                  [urgency (or/c 'low 'normal 'critical)])
+                  [urgency (or/c 'low 'normal 'critical)]
+                  [category (or/c string? #f)])
             [show (->m any)]
             [close (->m any)])])
          (struct-out exn:fail:libnotify))
@@ -33,7 +34,8 @@
           [body #f]
           [icon #f]
           [(_timeout timeout) #f]
-          [urgency 'normal])
+          [urgency 'normal]
+          [category #f])
 
     ;; Initialize libnotify unless it already has been
     ;; unlikely to work if the module is instantiated multiple times
@@ -57,6 +59,10 @@
     (define timeout _timeout)
     (define timeout-thunk
       (λ () (sleep timeout) (close)))
+
+    ;; See https://developer.gnome.org/notification-spec/ (Table 2)
+    (when category
+      (notification-set-category handle category))
 
     (define/public (show)
       (define-values (ok? err)
