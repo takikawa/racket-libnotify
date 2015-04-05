@@ -1,7 +1,24 @@
 libnotify for Racket
 --------------------
 
-A WIP FFI library for libnotify. Not yet stable at all.
+This package provides support for desktop notifications through the
+[libnotify](https://developer.gnome.org/libnotify/) library.
+
+Installation
+------------
+
+`raco pkg install libnotify` (installs from the package catalog)
+
+Documentation
+-------------
+
+Will be linked once the pkg-build service updates.
+
+Limitations
+-----------
+
+Doesn't currently support features like querying the server capabilities
+or supplying notification hints. If you need these features, let me know.
 
 ---
 
