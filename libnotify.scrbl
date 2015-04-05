@@ -1,17 +1,17 @@
 #lang scribble/manual
 
-@title{notify: an FFI binding for libnotify}
+@title{libnotify: an FFI binding for libnotify}
 
 @(require (for-label racket/base
                      racket/class
                      racket/draw
-                     notify))
+                     libnotify))
 
-@defmodule[notify]
+@defmodule[libnotify]
 
 This library provides an FFI binding to the
 @hyperlink["https://developer.gnome.org/libnotify/" "libnotify"]
-library.
+library which provides support for the desktop notifications API.
 
 @defclass[notification% object% ()]{
   @defconstructor[([summary string?]
