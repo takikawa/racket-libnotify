@@ -1,6 +1,8 @@
 libnotify for Racket
 --------------------
 
+[![Scribble](https://img.shields.io/badge/Docs-Scribble-blue.svg)](http://pkg-build.racket-lang.org/doc/libnotify/index.html)
+
 This package provides support for desktop notifications through the
 [libnotify](https://developer.gnome.org/libnotify/) library.
 
@@ -8,11 +10,6 @@ Installation
 ------------
 
 `raco pkg install libnotify` (installs from the package catalog)
-
-Documentation
--------------
-
-Will be linked once the pkg-build service updates.
 
 Limitations
 -----------
