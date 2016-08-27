@@ -1,6 +1,6 @@
 #lang racket
 
-(require "notify.rkt"
+(require "libnotify.rkt"
          pict)
 
 (define note
