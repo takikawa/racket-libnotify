@@ -55,3 +55,9 @@ library which provides support for the desktop notifications API.
   An exception structure type for reporting errors from the underlying
   libnotify library.
 }
+
+@defproc[(init-libnotify (name string? "Racket")) any]{
+  Initializes the library and registers the uninitialization procedure
+  as a @tech[#:doc '(lib "scribblings/reference/reference.scrbl")]{flush callback}
+  in @racket[(current-plumber)].
+}

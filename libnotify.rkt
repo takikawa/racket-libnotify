@@ -17,9 +17,13 @@
                   [urgency (or/c 'low 'normal 'critical)]
                   [category (or/c string? #f)])
             [show (->m any)]
-            [close (->m any)])]))
+            [close (->m any)])]
+          [init-libnotify (->* () (string?) any)]))
 
-(define initialized? #f)
+(define (init-libnotify (name "Racket"))
+  (notify-init name)
+  ;; Uninit the library before exiting
+  (plumber-add-flush! (current-plumber) (lambda (hd) (notify-uninit))))
 
 (define notification%
   (class object%
@@ -30,11 +34,6 @@
           [(_timeout timeout) #f]
           [urgency 'normal]
           [category #f])
-
-    ;; Initialize libnotify unless it already has been
-    ;; unlikely to work if the module is instantiated multiple times
-    (unless initialized?
-      (notify-init "Racket"))
 
     (define icon-path-arg
       (cond [(path? icon) (path->string icon)]
