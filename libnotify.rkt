@@ -17,15 +17,9 @@
                   [urgency (or/c 'low 'normal 'critical)]
                   [category (or/c string? #f)])
             [show (->m any)]
-            [close (->m any)])])
-         (struct-out exn:fail:libnotify))
-
-(struct exn:fail:libnotify exn:fail ())
+            [close (->m any)])]))
 
 (define initialized? #f)
-
-(define (raise-libnotify-error msg)
-  (raise (exn:fail:libnotify msg (current-continuation-marks))))
 
 (define notification%
   (class object%
@@ -65,22 +59,13 @@
     (define timeout-thunk
       (λ () (sleep timeout) (close)))
 
-    ;; See https://developer.gnome.org/notification-spec/ (Table 2)
+    ;; See https://developer-old.gnome.org/notification-spec/ (Table 2)
     (when category
       (notification-set-category handle category))
 
     (define/public (show)
-      (define-values (ok? err)
-        (notification-show handle))
-      (cond [(and ok? timeout)
-             (thread timeout-thunk)
-             (void)]
-            [ok? (void)]
-            [(not ok?)
-             (raise-libnotify-error (GError-message (ptr-ref err _GError)))]))
+      (notification-show handle)
+      (cond [timeout (thread timeout-thunk) (void)]))
 
     (define/public (close)
-      (define-values (ok? err)
-        (notification-close handle))
-      (unless ok?
-        (raise-libnotify-error (GError-message (ptr-ref err _GError)))))))
+      (notification-close handle))))
