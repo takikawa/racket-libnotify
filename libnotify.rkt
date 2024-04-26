@@ -77,10 +77,10 @@
              (void)]
             [ok? (void)]
             [(not ok?)
-             (raise-libnotify-error (GError-message err))]))
+             (raise-libnotify-error (GError-message (ptr-ref err _GError)))]))
 
     (define/public (close)
       (define-values (ok? err)
         (notification-close handle))
       (unless ok?
-        (raise-libnotify-error (GError-message err))))))
+        (raise-libnotify-error (GError-message (ptr-ref err _GError)))))))
