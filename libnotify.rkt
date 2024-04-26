@@ -22,7 +22,7 @@
 
 (define (init-libnotify (name "Racket"))
   (notify-init name)
-  ;; Uninit the library before exiting
+  ;; Control the finalization through current-plumber parameter
   (plumber-add-flush! (current-plumber) (lambda (hd) (notify-uninit))))
 
 (define notification%
