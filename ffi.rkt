@@ -58,7 +58,8 @@
 
 (define-notify notification-update
                (_fun _NotifyNotification _string _string _string
-                     -> _bool)
+                     -> (ret : _bool) ->
+                     (or ret (raise-libnotify-error "Fail to update the notification")))
                #:c-id notify_notification_update)
 
 (define-notify notification-show
