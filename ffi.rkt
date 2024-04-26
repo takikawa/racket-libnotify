@@ -4,6 +4,7 @@
          ffi/unsafe/define)
 
 (provide GError-message
+         _GError
          notification-new
          notification-update
          notification-show
