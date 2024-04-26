@@ -100,7 +100,8 @@
                #:c-id notify_notification_close)
 
 (define-notify notify-init
-               (_fun _string -> _bool)
+               (_fun _string -> (ret : _bool) ->
+                     (or ret (raise-libnotify-error "Fail to init libnotify")))
                #:c-id notify_init)
 
 (define-notify notify-uninit
