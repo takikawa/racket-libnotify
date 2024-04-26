@@ -3,6 +3,8 @@
 (require "libnotify.rkt"
          pict)
 
+(init-libnotify)
+
 (define note
   (new notification%
        [summary "Hello World!"]

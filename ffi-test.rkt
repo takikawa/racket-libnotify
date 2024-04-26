@@ -11,3 +11,5 @@
 (sleep 3)
 
 (notification-close notification)
+
+(notify-uninit)
