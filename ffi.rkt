@@ -33,7 +33,7 @@
 (define-cpointer-type _NotifyNotification)
 
 (define-cstruct _GError
-  ([domain _int]
+  ([domain _uint32]
    [code _int]
    [message _string]))
 
