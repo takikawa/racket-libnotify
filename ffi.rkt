@@ -2,9 +2,10 @@
 
 (require ffi/unsafe
          ffi/unsafe/define
+         ffi/unsafe/alloc
          "exception.rkt")
 
-(provide notification-new
+(provide (rename-out (notification-new/auto-free notification-new))
          notification-update
          notification-show
          notification-set-app-name
@@ -45,7 +46,6 @@
   ([domain _uint32]
    [code _int]
    [message _string]))
-
 (define-glib free-GError (_fun _GError -> _void) #:c-id g_error_free)
 
 (define _NotifyUrgency
@@ -55,6 +55,9 @@
                (_fun _string _string _string
                      -> _NotifyNotification)
                #:c-id notify_notification_new)
+;; Its result must not be deallocated manually
+(define notification-new/auto-free
+  ((allocator free) notification-new))
 
 (define-notify notification-update
                (_fun _NotifyNotification _string _string _string
